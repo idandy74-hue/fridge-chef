@@ -13,7 +13,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
 
-  <!-- 상단 네비게이션 헤더 -->
+  <!-- 상단 헤더 -->
   <header class="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
     <div class="max-w-md mx-auto flex items-center justify-between">
       <div class="flex items-center gap-2">
@@ -23,22 +23,20 @@
           <p class="text-[11px] text-slate-500">AI 식재료 구조대</p>
         </div>
       </div>
-      <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full font-bold border border-emerald-200">
-        🔒 보안 연결됨
+      <span class="text-[11px] bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full font-bold border border-amber-200">
+        AI 연결 완료
       </span>
     </div>
   </header>
 
   <main class="max-w-md mx-auto p-4">
 
-    <!-- ================= [1페이지: 재료 입력 & 촬영] ================= -->
+    <!-- [1페이지: 사진 등록 및 조건 선택] -->
     <section id="page-1" class="space-y-4">
-      
-      <!-- 사진 업로드 카드 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-3">
         <div class="flex justify-between items-center">
           <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-            <i class="fa-solid fa-camera text-amber-500"></i> 냉장고 속 사진 촬영
+            <i class="fa-solid fa-camera text-amber-500"></i> 냉장고 속 사진 등록
           </label>
           <span class="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full font-medium">필수</span>
         </div>
@@ -52,38 +50,26 @@
           <div class="text-xs text-slate-600 font-medium">
             <span class="text-amber-600 font-bold">터치하여 사진 촬영</span> 또는 앨범 선택
           </div>
-          <p class="text-[11px] text-slate-400">냉장고 내부가 선명히 나오도록 찍어주세요</p>
+          <p class="text-[11px] text-slate-400">냉장고 안 식재료가 보이게 찍어주세요</p>
         </div>
 
-        <!-- 이미지 미리보기 -->
         <div id="preview-box" class="relative hide">
           <img id="img-preview" src="" alt="미리보기" class="w-full h-48 object-cover rounded-xl border border-slate-200 shadow-inner">
           <button id="btn-remove-img" class="absolute top-2 right-2 bg-black/60 text-white w-7 h-7 rounded-full text-xs hover:bg-black flex items-center justify-center">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
-
-        <!-- 샘플 즉시 시연 (발표용 안전장치) -->
-        <div class="text-center pt-1">
-          <button id="btn-sample-demo" type="button" class="text-xs text-slate-400 underline hover:text-amber-600">
-            사진 없이 샘플 데이터로 즉시 시연하기 ⚡
-          </button>
-        </div>
       </div>
 
-      <!-- 보유 양념 선택 카드 -->
+      <!-- 양념 선택 카드 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2.5">
         <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
           <i class="fa-solid fa-jar text-amber-500"></i> 집에 있는 기본 양념 선택
         </label>
-        <p class="text-[11px] text-slate-500">선택하신 양념 범위 안에서 레시피를 조합합니다.</p>
-        
-        <div class="grid grid-cols-3 gap-2" id="seasoning-container">
-          <!-- JS 동적 생성 -->
-        </div>
+        <div class="grid grid-cols-3 gap-2" id="seasoning-container"></div>
       </div>
 
-      <!-- 요리 스타일 선택 카드 -->
+      <!-- 요리 스타일 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2">
         <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
           <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> 원하는 요리 스타일
@@ -104,16 +90,13 @@
         </div>
       </div>
 
-      <!-- 요청 버튼 -->
       <button id="btn-submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-3.5 rounded-xl font-bold text-base shadow-md shadow-amber-200 flex items-center justify-center gap-2 transition active:scale-95">
         <i class="fa-solid fa-utensils"></i> AI 맞춤 요리 추천받기
       </button>
     </section>
 
-    <!-- ================= [2페이지: 레시피 리포트] ================= -->
+    <!-- [2페이지: 레시피 리포트] -->
     <section id="page-2" class="space-y-4 hide">
-      
-      <!-- 상단 네비 바 -->
       <div class="flex items-center justify-between">
         <button id="btn-back" class="text-xs text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded-lg font-medium flex items-center gap-1 shadow-sm">
           <i class="fa-solid fa-arrow-left"></i> 재료 다시 찍기
@@ -123,33 +106,28 @@
         </span>
       </div>
 
-      <!-- 감지된 식재료 태그 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2">
         <h2 class="font-bold text-xs text-slate-500 flex items-center gap-1 uppercase tracking-wide">
-          <i class="fa-solid fa-magnifying-glass text-amber-500"></i> 냉장고에서 찾은 재료
+          <i class="fa-solid fa-magnifying-glass text-amber-500"></i> 사진에서 찾은 재료
         </h2>
-        <div id="detected-tags" class="flex flex-wrap gap-1.5 pt-1">
-          <!-- 동적 태그 -->
-        </div>
+        <div id="detected-tags" class="flex flex-wrap gap-1.5 pt-1"></div>
       </div>
 
-      <!-- 추천 요리 카드 목록 -->
-      <div class="space-y-3" id="recipes-list">
-        <!-- 동적 레시피 카드 -->
-      </div>
+      <div class="space-y-3" id="recipes-list"></div>
     </section>
 
     <!-- 로딩 오버레이 -->
     <div id="loading-overlay" class="fixed inset-0 bg-white/90 z-50 flex flex-col items-center justify-center gap-3 p-6 text-center hide">
       <div class="text-4xl animate-bounce">🍳</div>
-      <h3 class="font-bold text-slate-800 text-base">냉장고 속 재료를 분석 중입니다...</h3>
-      <p class="text-xs text-slate-500 leading-relaxed">자투리 재료로 만들 수 있는<br>최적의 황금 레시피를 조합하고 있어요!</p>
+      <h3 class="font-bold text-slate-800 text-base">사진 속 재료를 분석 중입니다...</h3>
+      <p class="text-xs text-slate-500 leading-relaxed">자투리 재료로 만들 수 있는<br>맞춤 레시피를 실시간 생성하고 있어요!</p>
     </div>
-
   </main>
 
   <script>
-    localStorage.setItem('gemini_api_key', 'AIzaSyAQ.Ab8RN6KmGTSYh-pIrfYupEOl9FLf8kcQ221Y1d1BV8-OnwCXcQ');
+    // ⭐ [중요] 여기에 발급받으신 Gemini API 키를 따옴표 안에 넣어주세요!
+    const MY_GEMINI_KEY = "AQ.Ab8RN6KmGTSYh-pIrfYupEOl9FLf8kcQ221Y1d1BV8-OnwCXcQ";
+
     const seasoningsList = ['간장', '소금', '설탕', '식용유', '고추장', '된장', '다진마늘', '참기름', '고춧가루', '후추', '식초', '케첩'];
     let selectedImageBase64 = null;
 
@@ -160,14 +138,13 @@
     const previewBox = document.getElementById('preview-box');
     const imgPreview = document.getElementById('img-preview');
     const btnRemoveImg = document.getElementById('btn-remove-img');
-    const btnSampleDemo = document.getElementById('btn-sample-demo');
     const btnSubmit = document.getElementById('btn-submit');
     const btnBack = document.getElementById('btn-back');
     const loadingOverlay = document.getElementById('loading-overlay');
     const detectedTagsContainer = document.getElementById('detected-tags');
     const recipesListContainer = document.getElementById('recipes-list');
 
-    // 양념 체크박스 동적 렌더링
+    // 양념 체크박스 생성
     const seasoningContainer = document.getElementById('seasoning-container');
     seasoningsList.forEach((s) => {
       const isDefault = ['간장', '소금', '설탕', '식용유', '참기름'].includes(s);
@@ -177,7 +154,7 @@
       seasoningContainer.appendChild(label);
     });
 
-    // 사진 등록 및 모바일 리사이징
+    // 사진 압축 및 로드
     dropArea.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
@@ -190,7 +167,7 @@
         img.onload = () => {
           const canvas = document.createElement('canvas');
           let width = img.width, height = img.height;
-          const max = 1000;
+          const max = 800; // 전송 속도 향상 리사이징
           if (width > max || height > max) {
             if (width > height) { height *= max / width; width = max; }
             else { width *= max / height; height = max; }
@@ -216,17 +193,10 @@
       previewBox.classList.add('hide');
     });
 
-    // 샘플 데이터 즉시 시연
-    btnSampleDemo.addEventListener('click', () => {
-      selectedImageBase64 = "DEMO_MODE";
-      renderResult(getFallbackData());
-      switchPage(2);
-    });
-
-    // 추천 요청 처리
+    // 분석 요청
     btnSubmit.addEventListener('click', async () => {
       if (!selectedImageBase64) {
-        alert('냉장고 사진을 먼저 업로드해 주세요!');
+        alert('냉장고 사진을 먼저 등록해 주세요!');
         return;
       }
 
@@ -235,23 +205,13 @@
       const checkedSeasonings = Array.from(document.querySelectorAll('#seasoning-container input:checked')).map(el => el.value);
       const selectedStyle = document.querySelector('input[name="style"]:checked').value;
 
-      if (selectedImageBase64 === "DEMO_MODE") {
-        setTimeout(() => {
-          renderResult(getFallbackData());
-          loadingOverlay.classList.add('hide');
-          switchPage(2);
-        }, 1000);
-        return;
-      }
-
       try {
-        const result = await fetchRecipeFromAPI(selectedImageBase64, checkedSeasonings, selectedStyle);
+        const result = await requestGemini(selectedImageBase64, checkedSeasonings, selectedStyle);
         renderResult(result);
         switchPage(2);
       } catch (err) {
-        console.warn('서버리스 API 호출 실패, 비상 데모 데이터로 표시합니다:', err);
-        renderResult(getFallbackData());
-        switchPage(2);
+        console.error(err);
+        alert('AI 분석 중 오류가 발생했습니다: ' + err.message);
       } finally {
         loadingOverlay.classList.add('hide');
       }
@@ -263,28 +223,64 @@
       if (pageNumber === 1) {
         page1.classList.remove('hide');
         page2.classList.add('hide');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         page1.classList.add('hide');
         page2.classList.remove('hide');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 서버리스 함수 (/api/generate) 호출
-    async function fetchRecipeFromAPI(imageBase64, seasonings, style) {
-      const res = await fetch('/api/generate', {
+    // Google Gemini API 직접 호출 함수
+    async function requestGemini(base64Data, seasonings, style) {
+      const cleanBase64 = base64Data.split(',')[1];
+      const prompt = `당신은 자투리 식재료 구조 전문 셰프입니다.
+제공된 사진 속 식재료를 식별하고, 사용자가 가진 양념을 활용해 최적의 레시피를 제안해 주세요.
+반드시 아래 JSON 포맷으로만 응답해 주세요 (마크다운 백틱 제외):
+
+보유 양념: [${seasonings.join(', ')}]
+희망 스타일: ${style}
+
+JSON 규격:
+{
+  "detected_ingredients": ["식재료1", "식재료2"],
+  "recipes": [
+    {
+      "name": "요리명",
+      "summary": "한 줄 소개",
+      "time": "15분",
+      "difficulty": "쉬움",
+      "ingredients": ["주재료1", "주재료2"],
+      "seasonings": ["양념1", "양념2"],
+      "steps": ["1. 조리 순서", "2. 조리 순서"],
+      "chef_tip": "조리 꿀팁",
+      "storage_tip": "식재료 보관 팁"
+    }
+  ]
+}`;
+
+      // Gemini 2.5 Flash 호출 (안정성 보장)
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${MY_GEMINI_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64, seasonings, style })
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: prompt },
+              { inline_data: { mime_type: "image/jpeg", data: cleanBase64 } }
+            ]
+          }],
+          generationConfig: { response_mime_type: "application/json" }
+        })
       });
 
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || '레시피 생성 요청 실패');
+        const errorDetail = await res.text();
+        throw new Error(`API 키 혹은 요청 오류 (${res.status}): 키를 확인해 주세요.`);
       }
 
-      return await res.json();
+      const data = await res.json();
+      const rawText = data.candidates[0].content.parts[0].text;
+      return JSON.parse(rawText.replace(/```json|```/g, '').trim());
     }
 
     // 결과 렌더링
@@ -306,7 +302,7 @@
             <div>
               <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">추천 ${idx + 1}</span>
               <h3 class="font-bold text-base text-slate-900 mt-1">${rcp.name}</h3>
-              <p class="text-xs text-slate-500">${rcp.summary || '냉장고 재료 맞춤 일품 요리'}</p>
+              <p class="text-xs text-slate-500">${rcp.summary || ''}</p>
             </div>
             <div class="text-right text-xs text-slate-400">
               <div>⏱️ ${rcp.time}</div>
@@ -333,48 +329,6 @@
         `;
         recipesListContainer.appendChild(card);
       });
-    }
-
-    // 비상용 폴백 데이터 (오류 방지)
-    function getFallbackData() {
-      return {
-        detected_ingredients: ["계란 4구", "대파 1단", "양파 반 개", "스팸(통조림햄)", "자투리 당근"],
-        recipes: [
-          {
-            name: "황금 파기름 스팸 계란볶음밥",
-            summary: "파기름 향과 짭짤한 스팸이 어우러진 15분 완성 보증 메뉴",
-            time: "15분",
-            difficulty: "쉬움",
-            ingredients: ["계란 2개", "스팸 1/2캔", "대파 1대", "밥 1공기"],
-            seasonings: ["식용유", "간장 1스푼", "참기름"],
-            steps: [
-              "대파는 얇게 송송 썰고, 스팸은 작게 깍둑썰기합니다.",
-              "팬에 식용유를 두르고 대파를 센 불에 볶아 파기름을 냅니다.",
-              "스팸을 넣고 노릇해질 때까지 함께 볶다가 한쪽으로 밀어둡니다.",
-              "빈 공간에 계란을 넣어 스크램블을 만든 뒤 밥과 함께 고루 섞습니다.",
-              "간장 1스푼을 팬 가장자리에 둘러 불맛을 입힌 후 참기름으로 마무리합니다."
-            ],
-            chef_tip: "스팸 자체 간이 있으므로 소금 없이 간장만 살짝 둘러주세요.",
-            storage_tip: "남은 대파는 씻어 송송 썬 후 냉동실에 보관하면 오래 유지됩니다."
-          },
-          {
-            name: "초간단 채소 계란말이",
-            summary: "자투리 양파와 당근을 깔끔하게 소진하는 고단백 반찬",
-            time: "10분",
-            difficulty: "보통",
-            ingredients: ["계란 3개", "양파 약간", "자투리 당근"],
-            seasonings: ["소금 두 꼬집", "식용유"],
-            steps: [
-              "양파와 당근을 잘게 다져 계란 3개와 함께 볼에 넣고 소금 간을 합니다.",
-              "팬을 약불로 달군 뒤 식용유를 두르고 계란물을 반만 붓습니다.",
-              "계란이 살짝 익으면 돌돌 말아가며 남은 계란물을 마저 붓습니다.",
-              "완성 후 한 김 식힌 뒤 썰어야 단면이 부서지지 않습니다."
-            ],
-            chef_tip: "약불에서 계란물을 나누어 부으면 훨씬 도톰하고 촉촉해집니다.",
-            storage_tip: "남은 깐 양파는 물기를 닦고 랩으로 단단히 싸서 냉장 보관하세요."
-          }
-        ]
-      };
     }
   </script>
 </body>
