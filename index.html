@@ -24,7 +24,7 @@
         </div>
       </div>
       <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold border border-emerald-200 flex items-center gap-1">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> AI 가동 중
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> AI 연결 완료
       </span>
     </div>
   </header>
@@ -148,7 +148,7 @@
     const detectedTagsContainer = document.getElementById('detected-tags');
     const recipesListContainer = document.getElementById('recipes-list');
 
-    // 양념 체크박스 생성
+    // 양념 체크박스 동적 생성
     const seasoningContainer = document.getElementById('seasoning-container');
     seasoningsList.forEach((s) => {
       const isDefault = ['간장', '소금', '설탕', '식용유', '참기름'].includes(s);
@@ -158,7 +158,7 @@
       seasoningContainer.appendChild(label);
     });
 
-    // 사진 압축 및 리사이징 (속도 향상 및 전송 안정화)
+    // 사진 압축 및 리사이징 (업로드 속도 및 전송 안정성 확보)
     dropArea.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
@@ -197,7 +197,7 @@
       previewBox.classList.add('hide');
     });
 
-    // 추천 요청
+    // 분석 요청 처리
     btnSubmit.addEventListener('click', async () => {
       if (!selectedImageBase64) {
         alert('냉장고 사진을 먼저 등록해 주세요!');
@@ -234,7 +234,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 깃허브 전용: Google Gemini API 브라우저 직접 호출 (404 방지 지원 모델 자동 순차 연결)
+    // Google Gemini API 직접 호출 함수 (gemini-3.8-flash 적용)
     async function requestGeminiDirect(base64Data, seasonings, style) {
       const cleanBase64 = base64Data.split(',')[1];
       const prompt = `당신은 냉장고 자투리 식재료 전문 셰프입니다.
@@ -262,46 +262,37 @@ JSON 규격:
   ]
 }`;
 
-      // 현재 정식 작동하는 모델 목록 (구형 1.5-pro 제외)
-      const models = ['gemini-2.0-flash', 'gemini-2.5-flash'];
-      let lastError = null;
+      // 구글 안내 공식 모델: gemini-3.8-flash
+      const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent';
 
-      for (const model of models) {
-        try {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-goog-api-key': MY_GEMINI_KEY.trim()
-            },
-            body: JSON.stringify({
-              contents: [{
-                parts: [
-                  { text: prompt },
-                  { inline_data: { mime_type: "image/jpeg", data: cleanBase64 } }
-                ]
-              }],
-              generationConfig: { response_mime_type: "application/json" }
-            })
-          });
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': MY_GEMINI_KEY.trim()
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: prompt },
+              { inline_data: { mime_type: "image/jpeg", data: cleanBase64 } }
+            ]
+          }],
+          generationConfig: { response_mime_type: "application/json" }
+        })
+      });
 
-          if (res.ok) {
-            const data = await res.json();
-            const rawText = data.candidates[0].content.parts[0].text;
-            return JSON.parse(rawText.replace(/```json|```/g, '').trim());
-          } else {
-            const errDetail = await res.text();
-            lastError = `[${model}] ${res.status}: ${errDetail}`;
-          }
-        } catch (e) {
-          lastError = e.message;
-        }
+      if (!res.ok) {
+        const errDetail = await res.text();
+        throw new Error(`[${res.status}] ${errDetail}`);
       }
 
-      throw new Error(lastError || '요청 실패: API 키 상태를 다시 확인해 주세요.');
+      const data = await res.json();
+      const rawText = data.candidates[0].content.parts[0].text;
+      return JSON.parse(rawText.replace(/```json|```/g, '').trim());
     }
 
-    // 결과 화면 렌더링
+    // 결과 렌더링 함수
     function renderResult(data) {
       detectedTagsContainer.innerHTML = '';
       (data.detected_ingredients || []).forEach(tag => {
