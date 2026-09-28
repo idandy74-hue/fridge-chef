@@ -13,28 +13,25 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
 
-  <!-- 상단 네비게이션 헤더 -->
   <header class="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
     <div class="max-w-md mx-auto flex items-center justify-between">
       <div class="flex items-center gap-2">
         <span class="text-2xl">🍳</span>
         <div>
           <h1 class="font-bold text-base text-slate-900 leading-tight">냉장고 파먹기 셰프</h1>
-          <p class="text-[11px] text-slate-500">AI 식재료 구조대</p>
+          <p class="text-[11px] text-slate-500">AI 식재료 구조대 (v3.8)</p>
         </div>
       </div>
       <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold border border-emerald-200 flex items-center gap-1">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> AI 연결 완료
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 3.8-Flash 연결
       </span>
     </div>
   </header>
 
   <main class="max-w-md mx-auto p-4">
 
-    <!-- ================= [1페이지: 사진 등록 & 옵션 선택] ================= -->
+    <!-- [1페이지: 사진 등록 & 옵션 선택] -->
     <section id="page-1" class="space-y-4">
-      
-      <!-- 사진 등록 영역 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-3">
         <div class="flex justify-between items-center">
           <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
@@ -93,13 +90,12 @@
         </div>
       </div>
 
-      <!-- 분석 버튼 -->
       <button id="btn-submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-3.5 rounded-xl font-bold text-base shadow-md shadow-amber-200 flex items-center justify-center gap-2 transition active:scale-95">
         <i class="fa-solid fa-utensils"></i> AI 맞춤 요리 추천받기
       </button>
     </section>
 
-    <!-- ================= [2페이지: 레시피 리포트] ================= -->
+    <!-- [2페이지: 레시피 리포트] -->
     <section id="page-2" class="space-y-4 hide">
       <div class="flex items-center justify-between">
         <button id="btn-back" class="text-xs text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded-lg font-medium flex items-center gap-1 shadow-sm">
@@ -148,7 +144,7 @@
     const detectedTagsContainer = document.getElementById('detected-tags');
     const recipesListContainer = document.getElementById('recipes-list');
 
-    // 양념 체크박스 동적 생성
+    // 양념 체크박스 생성
     const seasoningContainer = document.getElementById('seasoning-container');
     seasoningsList.forEach((s) => {
       const isDefault = ['간장', '소금', '설탕', '식용유', '참기름'].includes(s);
@@ -158,7 +154,7 @@
       seasoningContainer.appendChild(label);
     });
 
-    // 사진 압축 및 리사이징 (업로드 속도 및 전송 안정성 확보)
+    // 사진 압축 및 리사이징
     dropArea.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
@@ -197,7 +193,7 @@
       previewBox.classList.add('hide');
     });
 
-    // 분석 요청 처리
+    // 추천 요청
     btnSubmit.addEventListener('click', async () => {
       if (!selectedImageBase64) {
         alert('냉장고 사진을 먼저 등록해 주세요!');
@@ -234,7 +230,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Google Gemini API 직접 호출 함수 (gemini-3.8-flash 적용)
+    // Google Gemini API 직접 호출 함수 (gemini-3.8-flash 지원 및 URL/헤더 병행)
     async function requestGeminiDirect(base64Data, seasonings, style) {
       const cleanBase64 = base64Data.split(',')[1];
       const prompt = `당신은 냉장고 자투리 식재료 전문 셰프입니다.
@@ -262,37 +258,52 @@ JSON 규격:
   ]
 }`;
 
-      // 구글 안내 공식 모델: gemini-3.8-flash
-      const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent';
+      const key = MY_GEMINI_KEY.trim();
+      const requestPayload = {
+        contents: [{
+          parts: [
+            { text: prompt },
+            { inline_data: { mime_type: "image/jpeg", data: cleanBase64 } }
+          ]
+        }]
+      };
 
-      const res = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-goog-api-key': MY_GEMINI_KEY.trim()
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [
-              { text: prompt },
-              { inline_data: { mime_type: "image/jpeg", data: cleanBase64 } }
-            ]
-          }],
-          generationConfig: { response_mime_type: "application/json" }
-        })
-      });
+      // 구글 최신 모델 순차 시도 (gemini-3.8-flash 우선)
+      const tryList = [
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${key}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent`
+      ];
 
-      if (!res.ok) {
-        const errDetail = await res.text();
-        throw new Error(`[${res.status}] ${errDetail}`);
+      let lastError = null;
+
+      for (let i = 0; i < tryList.length; i++) {
+        try {
+          const url = tryList[i];
+          const headers = { 'Content-Type': 'application/json' };
+          if (i === 1) headers['x-goog-api-key'] = key;
+
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(requestPayload)
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            const rawText = data.candidates[0].content.parts[0].text;
+            return JSON.parse(rawText.replace(/```json|```/g, '').trim());
+          } else {
+            const errDetail = await res.text();
+            lastError = `[3.8-flash] ${res.status}: ${errDetail}`;
+          }
+        } catch (e) {
+          lastError = e.message;
+        }
       }
 
-      const data = await res.json();
-      const rawText = data.candidates[0].content.parts[0].text;
-      return JSON.parse(rawText.replace(/```json|```/g, '').trim());
+      throw new Error(lastError || '요청 실패: API 키 혹은 네트워크 상태를 확인해 주세요.');
     }
 
-    // 결과 렌더링 함수
     function renderResult(data) {
       detectedTagsContainer.innerHTML = '';
       (data.detected_ingredients || []).forEach(tag => {
