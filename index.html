@@ -23,18 +23,18 @@
           <p class="text-[11px] text-slate-500">AI 식재료 구조대</p>
         </div>
       </div>
-      <span class="text-[11px] bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full font-bold border border-amber-200">
-        AI 연결 모드
+      <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold border border-emerald-200 flex items-center gap-1">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> AI 가동 중
       </span>
     </div>
   </header>
 
   <main class="max-w-md mx-auto p-4">
 
-    <!-- ================= [1페이지: 재료 등록 & 스타일 선택] ================= -->
+    <!-- ================= [1페이지: 사진 등록 & 옵션 선택] ================= -->
     <section id="page-1" class="space-y-4">
       
-      <!-- 사진 등록 카드 -->
+      <!-- 사진 등록 영역 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-3">
         <div class="flex justify-between items-center">
           <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
@@ -55,7 +55,6 @@
           <p class="text-[11px] text-slate-400">냉장고 내부 식재료가 보이게 찍어주세요</p>
         </div>
 
-        <!-- 이미지 미리보기 -->
         <div id="preview-box" class="relative hide">
           <img id="img-preview" src="" alt="미리보기" class="w-full h-48 object-cover rounded-xl border border-slate-200 shadow-inner">
           <button id="btn-remove-img" class="absolute top-2 right-2 bg-black/60 text-white w-7 h-7 rounded-full text-xs hover:bg-black flex items-center justify-center">
@@ -64,19 +63,16 @@
         </div>
       </div>
 
-      <!-- 보유 양념 선택 카드 -->
+      <!-- 양념 선택 카드 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2.5">
         <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
           <i class="fa-solid fa-jar text-amber-500"></i> 집에 있는 기본 양념 선택
         </label>
-        <p class="text-[11px] text-slate-500">체크된 양념만 활용하여 최적의 조합을 만듭니다.</p>
-        
-        <div class="grid grid-cols-3 gap-2" id="seasoning-container">
-          <!-- JS 동적 생성 -->
-        </div>
+        <p class="text-[11px] text-slate-500">체크된 양념을 우선 활용해 레시피를 제안합니다.</p>
+        <div class="grid grid-cols-3 gap-2" id="seasoning-container"></div>
       </div>
 
-      <!-- 요리 스타일 선택 -->
+      <!-- 요리 스타일 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2">
         <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
           <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> 원하는 요리 스타일
@@ -97,7 +93,7 @@
         </div>
       </div>
 
-      <!-- 분석 요청 버튼 -->
+      <!-- 분석 버튼 -->
       <button id="btn-submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-3.5 rounded-xl font-bold text-base shadow-md shadow-amber-200 flex items-center justify-center gap-2 transition active:scale-95">
         <i class="fa-solid fa-utensils"></i> AI 맞춤 요리 추천받기
       </button>
@@ -124,7 +120,7 @@
       <div class="space-y-3" id="recipes-list"></div>
     </section>
 
-    <!-- 로딩 인디케이터 오버레이 -->
+    <!-- 로딩 오버레이 -->
     <div id="loading-overlay" class="fixed inset-0 bg-white/90 z-50 flex flex-col items-center justify-center gap-3 p-6 text-center hide">
       <div class="text-4xl animate-bounce">🍳</div>
       <h3 class="font-bold text-slate-800 text-base">사진 속 재료를 분석 중입니다...</h3>
@@ -133,7 +129,7 @@
   </main>
 
   <script>
-    // ⭐ [필수 입력] 아래 따옴표 안에 AIzaSy로 시작하는 키 전체를 넣어주세요.
+    // ⭐ [필수] 여기에 발급받으신 AQ... 키 전체를 따옴표 안에 넣어주세요!
     const MY_GEMINI_KEY = "AQ.Ab8RN6KmGTSYh-pIrfYupEOl9FLf8kcQ221Y1d1BV8-OnwCXcQ";
 
     const seasoningsList = ['간장', '소금', '설탕', '식용유', '고추장', '된장', '다진마늘', '참기름', '고춧가루', '후추', '식초', '케첩'];
@@ -152,7 +148,7 @@
     const detectedTagsContainer = document.getElementById('detected-tags');
     const recipesListContainer = document.getElementById('recipes-list');
 
-    // 양념 태그 체크박스 렌더링
+    // 양념 체크박스 생성
     const seasoningContainer = document.getElementById('seasoning-container');
     seasoningsList.forEach((s) => {
       const isDefault = ['간장', '소금', '설탕', '식용유', '참기름'].includes(s);
@@ -162,7 +158,7 @@
       seasoningContainer.appendChild(label);
     });
 
-    // 사진 선택 및 스마트폰 고화질 압축 리사이징
+    // 사진 압축 및 리사이징 (속도 향상 및 전송 안정화)
     dropArea.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
@@ -214,7 +210,7 @@
       const selectedStyle = document.querySelector('input[name="style"]:checked').value;
 
       try {
-        const result = await requestGemini(selectedImageBase64, checkedSeasonings, selectedStyle);
+        const result = await requestGeminiDirect(selectedImageBase64, checkedSeasonings, selectedStyle);
         renderResult(result);
         switchPage(2);
       } catch (err) {
@@ -238,9 +234,8 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Google Gemini API 직접 호출 함수 (호환 모델 다중 지원)
-    // Google Gemini API 정식 엔드포인트 호출 (v1 기반 404 완전 해결)
-    async function requestGemini(base64Data, seasonings, style) {
+    // 깃허브 전용: Google Gemini API 브라우저 직접 호출 (404 방지 지원 모델 자동 순차 연결)
+    async function requestGeminiDirect(base64Data, seasonings, style) {
       const cleanBase64 = base64Data.split(',')[1];
       const prompt = `당신은 냉장고 자투리 식재료 전문 셰프입니다.
 사진 속 식재료들을 정확하게 식별하고, 사용자가 가진 양념을 활용해 맞춤 레시피를 제안해 주세요.
@@ -267,26 +262,26 @@ JSON 규격:
   ]
 }`;
 
-      // 정식 버전(v1) 및 안정 모델 엔드포인트
-      const endpoints = [
-        `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${MY_GEMINI_KEY}`,
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${MY_GEMINI_KEY}`
-      ];
-
+      // 현재 정식 작동하는 모델 목록 (구형 1.5-pro 제외)
+      const models = ['gemini-2.0-flash', 'gemini-2.5-flash'];
       let lastError = null;
 
-      for (const url of endpoints) {
+      for (const model of models) {
         try {
-          const res = await fetch(url, {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'x-goog-api-key': MY_GEMINI_KEY.trim()
+            },
             body: JSON.stringify({
               contents: [{
                 parts: [
                   { text: prompt },
                   { inline_data: { mime_type: "image/jpeg", data: cleanBase64 } }
                 ]
-              }]
+              }],
+              generationConfig: { response_mime_type: "application/json" }
             })
           });
 
@@ -296,17 +291,17 @@ JSON 규격:
             return JSON.parse(rawText.replace(/```json|```/g, '').trim());
           } else {
             const errDetail = await res.text();
-            lastError = `[${res.status}] ${errDetail}`;
+            lastError = `[${model}] ${res.status}: ${errDetail}`;
           }
         } catch (e) {
           lastError = e.message;
         }
       }
 
-      throw new Error(lastError || '요청 실패: API 키 혹은 네트워크 상태를 확인해 주세요.');
+      throw new Error(lastError || '요청 실패: API 키 상태를 다시 확인해 주세요.');
     }
 
-    // 결과 렌더링
+    // 결과 화면 렌더링
     function renderResult(data) {
       detectedTagsContainer.innerHTML = '';
       (data.detected_ingredients || []).forEach(tag => {
