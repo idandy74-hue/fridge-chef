@@ -1,4 +1,3 @@
-````javascript
 export default async function handler(req, res) {
   // POST 방식만 허용
   if (req.method !== 'POST') {
@@ -34,7 +33,6 @@ export default async function handler(req, res) {
       ? imageBase64.split(',')[1]
       : imageBase64;
 
-
   const prompt = `당신은 냉장고 자투리 식재료 구조 전문 셰프입니다.
 제공된 냉장고 사진을 정밀 분석하여 아래 JSON 규격으로만 응답해 주세요. 다른 마크다운이나 일반 텍스트는 일절 제외하세요.
 
@@ -59,9 +57,7 @@ JSON 규격:
   ]
 }`;
 
-
   try {
-
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {
@@ -72,78 +68,57 @@ JSON 규격:
         },
 
         body: JSON.stringify({
-
           contents: [
             {
               parts: [
-
                 {
                   text: prompt
                 },
-
                 {
-                  inline_data: {
-                    mime_type: 'image/jpeg',
+                  inlineData: {
+                    mimeType: 'image/jpeg',
                     data: cleanBase64
                   }
                 }
-
               ]
             }
           ],
 
           generationConfig: {
-            response_mime_type: 'application/json'
+            responseMimeType: 'application/json'
           }
-
         })
-
       }
     );
 
-
     if (!response.ok) {
-
-      const errText =
-        await response.text();
+      const errText = await response.text();
 
       return res.status(response.status).json({
         error: `Gemini API 에러: ${errText}`
       });
-
     }
 
-
-    const data =
-      await response.json();
-
+    const data = await response.json();
 
     const rawText =
       data.candidates[0]
         .content.parts[0]
         .text;
 
-
-    const parsedData =
-      JSON.parse(
-        rawText
-          .replace(/```json|```/g, '')
-          .trim()
-      );
-
+    const parsedData = JSON.parse(
+      rawText
+        .replace(/```json|```/g, '')
+        .trim()
+    );
 
     return res.status(200).json(parsedData);
 
-
   } catch (error) {
-
     return res.status(500).json({
       error:
         error.message ||
         '서버 내부 처리 오류'
     });
-
   }
-
 }
-````
