@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,10 +8,16 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    .hide { display: none !important; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .hide {
+      display: none !important;
+    }
   </style>
 </head>
+
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
 
   <header class="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3 shadow-sm">
@@ -18,12 +25,18 @@
       <div class="flex items-center gap-2">
         <span class="text-2xl">🍳</span>
         <div>
-          <h1 class="font-bold text-base text-slate-900 leading-tight">냉장고 파먹기 셰프</h1>
-          <p class="text-[11px] text-slate-500">AI 식재료 구조대</p>
+          <h1 class="font-bold text-base text-slate-900 leading-tight">
+            냉장고 파먹기 셰프
+          </h1>
+          <p class="text-[11px] text-slate-500">
+            AI 식재료 구조대
+          </p>
         </div>
       </div>
+
       <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full font-bold border border-emerald-200 flex items-center gap-1">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> 정상 연결
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        정상 연결
       </span>
     </div>
   </header>
@@ -32,328 +45,671 @@
 
     <!-- [1페이지: 사진 등록 & 옵션 선택] -->
     <section id="page-1" class="space-y-4">
+
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-3">
+
         <div class="flex justify-between items-center">
           <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-            <i class="fa-solid fa-camera text-amber-500"></i> 냉장고 속 사진 등록
+            <i class="fa-solid fa-camera text-amber-500"></i>
+            냉장고 속 사진 등록
           </label>
-          <span class="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full font-medium">필수</span>
+
+          <span class="text-xs text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full font-medium">
+            필수
+          </span>
         </div>
 
         <input type="file" id="file-input" accept="image/*" class="hide">
-        
-        <div id="drop-area" class="border-2 border-dashed border-slate-200 hover:border-amber-400 rounded-xl p-6 text-center cursor-pointer transition bg-slate-50 flex flex-col items-center justify-center gap-2">
+
+        <div id="drop-area"
+          class="border-2 border-dashed border-slate-200 hover:border-amber-400 rounded-xl p-6 text-center cursor-pointer transition bg-slate-50 flex flex-col items-center justify-center gap-2">
+
           <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 text-xl">
             <i class="fa-solid fa-cloud-arrow-up"></i>
           </div>
+
           <div class="text-xs text-slate-600 font-medium">
-            <span class="text-amber-600 font-bold">터치하여 사진 촬영</span> 또는 앨범 선택
+            <span class="text-amber-600 font-bold">
+              터치하여 사진 촬영
+            </span>
+            또는 앨범 선택
           </div>
-          <p class="text-[11px] text-slate-400">냉장고 내부 식재료가 보이게 찍어주세요</p>
+
+          <p class="text-[11px] text-slate-400">
+            냉장고 내부 식재료가 보이게 찍어주세요
+          </p>
         </div>
 
         <div id="preview-box" class="relative hide">
-          <img id="img-preview" src="" alt="미리보기" class="w-full h-48 object-cover rounded-xl border border-slate-200 shadow-inner">
-          <button id="btn-remove-img" class="absolute top-2 right-2 bg-black/60 text-white w-7 h-7 rounded-full text-xs hover:bg-black flex items-center justify-center">
+
+          <img id="img-preview"
+            src=""
+            alt="미리보기"
+            class="w-full h-48 object-cover rounded-xl border border-slate-200 shadow-inner">
+
+          <button id="btn-remove-img"
+            class="absolute top-2 right-2 bg-black/60 text-white w-7 h-7 rounded-full text-xs hover:bg-black flex items-center justify-center">
+
             <i class="fa-solid fa-xmark"></i>
+
           </button>
         </div>
+
       </div>
+
 
       <!-- 양념 선택 카드 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2.5">
+
         <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-          <i class="fa-solid fa-jar text-amber-500"></i> 집에 있는 기본 양념 선택
+          <i class="fa-solid fa-jar text-amber-500"></i>
+          집에 있는 기본 양념 선택
         </label>
-        <p class="text-[11px] text-slate-500">체크된 양념을 우선 활용해 레시피를 제안합니다.</p>
+
+        <p class="text-[11px] text-slate-500">
+          체크된 양념을 우선 활용해 레시피를 제안합니다.
+        </p>
+
         <div class="grid grid-cols-3 gap-2" id="seasoning-container"></div>
+
       </div>
+
 
       <!-- 요리 스타일 -->
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2">
+
         <label class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
-          <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> 원하는 요리 스타일
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i>
+          원하는 요리 스타일
         </label>
+
         <div class="grid grid-cols-3 gap-2 text-xs">
+
           <label class="border border-slate-200 rounded-xl p-2.5 text-center cursor-pointer font-medium has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50 has-[:checked]:text-amber-700">
-            <input type="radio" name="style" value="15분 초간단 자취요리" checked class="hide">
+
+            <input
+              type="radio"
+              name="style"
+              value="15분 초간단 자취요리"
+              checked
+              class="hide">
+
             ⚡ 초간단
           </label>
+
+
           <label class="border border-slate-200 rounded-xl p-2.5 text-center cursor-pointer font-medium has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50 has-[:checked]:text-amber-700">
-            <input type="radio" name="style" value="건강/다이어트 저칼로리" class="hide">
+
+            <input
+              type="radio"
+              name="style"
+              value="건강/다이어트 저칼로리"
+              class="hide">
+
             🥗 건강식
           </label>
+
+
           <label class="border border-slate-200 rounded-xl p-2.5 text-center cursor-pointer font-medium has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50 has-[:checked]:text-amber-700">
-            <input type="radio" name="style" value="맛있는 밥도둑 일품요리" class="hide">
+
+            <input
+              type="radio"
+              name="style"
+              value="맛있는 밥도둑 일품요리"
+              class="hide">
+
             🍲 일품요리
           </label>
+
         </div>
+
       </div>
 
-      <button id="btn-submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white py-3.5 rounded-xl font-bold text-base shadow-md shadow-amber-200 flex items-center justify-center gap-2 transition active:scale-95">
-        <i class="fa-solid fa-utensils"></i> AI 맞춤 요리 추천받기
+
+      <button
+        id="btn-submit"
+        class="w-full bg-amber-500 hover:bg-amber-600 text-white py-3.5 rounded-xl font-bold text-base shadow-md shadow-amber-200 flex items-center justify-center gap-2 transition active:scale-95">
+
+        <i class="fa-solid fa-utensils"></i>
+        AI 맞춤 요리 추천받기
+
       </button>
+
     </section>
+
 
     <!-- [2페이지: 레시피 리포트] -->
     <section id="page-2" class="space-y-4 hide">
+
       <div class="flex items-center justify-between">
-        <button id="btn-back" class="text-xs text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded-lg font-medium flex items-center gap-1 shadow-sm">
-          <i class="fa-solid fa-arrow-left"></i> 재료 다시 찍기
+
+        <button
+          id="btn-back"
+          class="text-xs text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded-lg font-medium flex items-center gap-1 shadow-sm">
+
+          <i class="fa-solid fa-arrow-left"></i>
+          재료 다시 찍기
+
         </button>
+
+
         <span class="text-xs text-amber-700 font-bold bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
           Chef Report
         </span>
+
       </div>
+
 
       <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-2">
+
         <h2 class="font-bold text-xs text-slate-500 flex items-center gap-1 uppercase tracking-wide">
-          <i class="fa-solid fa-magnifying-glass text-amber-500"></i> 사진에서 찾은 재료
+
+          <i class="fa-solid fa-magnifying-glass text-amber-500"></i>
+          사진에서 찾은 재료
+
         </h2>
-        <div id="detected-tags" class="flex flex-wrap gap-1.5 pt-1"></div>
+
+        <div id="detected-tags"
+          class="flex flex-wrap gap-1.5 pt-1">
+        </div>
+
       </div>
 
+
       <div class="space-y-3" id="recipes-list"></div>
+
     </section>
 
+
     <!-- 로딩 오버레이 -->
-    <div id="loading-overlay" class="fixed inset-0 bg-white/90 z-50 flex flex-col items-center justify-center gap-3 p-6 text-center hide">
-      <div class="text-4xl animate-bounce">🍳</div>
-      <h3 class="font-bold text-slate-800 text-base">사진 속 재료를 분석 중입니다...</h3>
-      <p class="text-xs text-slate-500 leading-relaxed">식재료를 판독하여<br>최적의 황금 레시피를 실시간 생성하고 있어요!</p>
+    <div
+      id="loading-overlay"
+      class="fixed inset-0 bg-white/90 z-50 flex flex-col items-center justify-center gap-3 p-6 text-center hide">
+
+      <div class="text-4xl animate-bounce">
+        🍳
+      </div>
+
+      <h3 class="font-bold text-slate-800 text-base">
+        사진 속 재료를 분석 중입니다...
+      </h3>
+
+      <p class="text-xs text-slate-500 leading-relaxed">
+        식재료를 판독하여<br>
+        최적의 황금 레시피를 실시간 생성하고 있어요!
+      </p>
+
     </div>
+
   </main>
 
-  <script>
-    // ⭐ [필수] 여기에 발급받으신 AQ... 키 전체를 따옴표 안에 넣어주세요!
-    const MY_GEMINI_KEY = "";
 
-    const seasoningsList = ['간장', '소금', '설탕', '식용유', '고추장', '된장', '다진마늘', '참기름', '고춧가루', '후추', '식초', '케첩'];
+  <script>
+
+    const seasoningsList = [
+      '간장',
+      '소금',
+      '설탕',
+      '식용유',
+      '고추장',
+      '된장',
+      '다진마늘',
+      '참기름',
+      '고춧가루',
+      '후추',
+      '식초',
+      '케첩'
+    ];
+
     let selectedImageBase64 = null;
+
 
     const page1 = document.getElementById('page-1');
     const page2 = document.getElementById('page-2');
+
     const dropArea = document.getElementById('drop-area');
     const fileInput = document.getElementById('file-input');
+
     const previewBox = document.getElementById('preview-box');
     const imgPreview = document.getElementById('img-preview');
+
     const btnRemoveImg = document.getElementById('btn-remove-img');
     const btnSubmit = document.getElementById('btn-submit');
     const btnBack = document.getElementById('btn-back');
+
     const loadingOverlay = document.getElementById('loading-overlay');
-    const detectedTagsContainer = document.getElementById('detected-tags');
-    const recipesListContainer = document.getElementById('recipes-list');
 
-    const seasoningContainer = document.getElementById('seasoning-container');
+    const detectedTagsContainer =
+      document.getElementById('detected-tags');
+
+    const recipesListContainer =
+      document.getElementById('recipes-list');
+
+    const seasoningContainer =
+      document.getElementById('seasoning-container');
+
+
+    /* 양념 버튼 생성 */
+
     seasoningsList.forEach((s) => {
-      const isDefault = ['간장', '소금', '설탕', '식용유', '참기름'].includes(s);
+
+      const isDefault = [
+        '간장',
+        '소금',
+        '설탕',
+        '식용유',
+        '참기름'
+      ].includes(s);
+
       const label = document.createElement('label');
-      label.className = "flex items-center gap-1.5 p-2 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50 has-[:checked]:text-amber-800";
-      label.innerHTML = `<input type="checkbox" value="${s}" ${isDefault ? 'checked' : ''} class="accent-amber-500"> ${s}`;
+
+      label.className =
+        "flex items-center gap-1.5 p-2 rounded-xl border border-slate-200 text-xs font-medium cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:bg-amber-50 has-[:checked]:text-amber-800";
+
+      label.innerHTML =
+        `<input type="checkbox" value="${s}" ${isDefault ? 'checked' : ''} class="accent-amber-500"> ${s}`;
+
       seasoningContainer.appendChild(label);
+
     });
 
-    dropArea.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+
+    /* 사진 업로드 */
+
+    dropArea.addEventListener('click', () => {
+      fileInput.click();
     });
+
+
+    fileInput.addEventListener('change', (e) => {
+
+      if (e.target.files && e.target.files[0]) {
+        handleFile(e.target.files[0]);
+      }
+
+    });
+
 
     function handleFile(file) {
+
       const reader = new FileReader();
+
       reader.onload = (e) => {
+
         const img = new Image();
+
         img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let width = img.width, height = img.height;
+
+          const canvas =
+            document.createElement('canvas');
+
+          let width = img.width;
+          let height = img.height;
+
           const max = 700;
+
           if (width > max || height > max) {
-            if (width > height) { height *= max / width; width = max; }
-            else { width *= max / height; height = max; }
+
+            if (width > height) {
+
+              height *= max / width;
+              width = max;
+
+            } else {
+
+              width *= max / height;
+              height = max;
+
+            }
+
           }
+
           canvas.width = width;
           canvas.height = height;
-          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-          
-          selectedImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
-          imgPreview.src = selectedImageBase64;
+
+          canvas
+            .getContext('2d')
+            .drawImage(img, 0, 0, width, height);
+
+          selectedImageBase64 =
+            canvas.toDataURL('image/jpeg', 0.7);
+
+          imgPreview.src =
+            selectedImageBase64;
+
           dropArea.classList.add('hide');
           previewBox.classList.remove('hide');
+
         };
+
         img.src = e.target.result;
+
       };
+
       reader.readAsDataURL(file);
+
     }
 
+
+    /* 사진 삭제 */
+
     btnRemoveImg.addEventListener('click', () => {
+
       selectedImageBase64 = null;
+
       fileInput.value = '';
+
       dropArea.classList.remove('hide');
       previewBox.classList.add('hide');
+
     });
 
+
+    /* AI 추천 버튼 */
+
     btnSubmit.addEventListener('click', async () => {
+
       if (!selectedImageBase64) {
+
         alert('냉장고 사진을 먼저 등록해 주세요!');
         return;
+
       }
 
       btnSubmit.disabled = true;
+
       loadingOverlay.classList.remove('hide');
 
-      const checkedSeasonings = Array.from(document.querySelectorAll('#seasoning-container input:checked')).map(el => el.value);
-      const selectedStyle = document.querySelector('input[name="style"]:checked').value;
+
+      const checkedSeasonings =
+        Array.from(
+          document.querySelectorAll(
+            '#seasoning-container input:checked'
+          )
+        ).map(el => el.value);
+
+
+      const selectedStyle =
+        document.querySelector(
+          'input[name="style"]:checked'
+        ).value;
+
 
       try {
-        const result = await callGeminiAI(selectedImageBase64, checkedSeasonings, selectedStyle);
+
+        const result =
+          await callGeminiAI(
+            selectedImageBase64,
+            checkedSeasonings,
+            selectedStyle
+          );
+
         renderResult(result);
+
         switchPage(2);
+
       } catch (err) {
+
         console.error(err);
+
         if (err.message.includes('429')) {
-          alert('구글 무료 쿼터 요청 제한입니다. 약 1분 후 다시 시도해 주세요.');
+
+          alert(
+            '구글 무료 쿼터 요청 제한입니다. 약 1분 후 다시 시도해 주세요.'
+          );
+
         } else {
-          alert('AI 분석 안내: ' + err.message);
+
+          alert(
+            'AI 분석 안내: ' + err.message
+          );
+
         }
+
       } finally {
+
         btnSubmit.disabled = false;
+
         loadingOverlay.classList.add('hide');
+
       }
+
     });
 
-    btnBack.addEventListener('click', () => switchPage(1));
+
+    /* 뒤로가기 */
+
+    btnBack.addEventListener('click', () => {
+      switchPage(1);
+    });
+
+
+    /* 페이지 전환 */
 
     function switchPage(pageNumber) {
+
       if (pageNumber === 1) {
+
         page1.classList.remove('hide');
         page2.classList.add('hide');
+
       } else {
+
         page1.classList.add('hide');
         page2.classList.remove('hide');
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
 
-    // AI 호출부 (503 혼잡 시 경량 모델 3.5-flash-lite로 자동 우회)
-    async function callGeminiAI(base64Data, seasonings, style) {
-      const cleanBase64 = base64Data.split(',')[1];
-      const prompt = `당신은 냉장고 자투리 식재료 전문 셰프입니다.
-제공된 사진 속 식재료를 식별하고, 사용자가 가진 양념을 활용해 최적의 레시피를 제안해 주세요.
-반드시 마크다운 백틱 없이 순수 JSON 포맷으로만 응답해 주세요:
-
-보유 양념: [${seasonings.join(', ')}]
-희망 요리 스타일: ${style}
-
-JSON 규격:
-{
-  "detected_ingredients": ["식재료1", "식재료2"],
-  "recipes": [
-    {
-      "name": "요리명",
-      "summary": "한 줄 소개",
-      "time": "15분",
-      "difficulty": "쉬움",
-      "ingredients": ["주재료1", "주재료2"],
-      "seasonings": ["양념1", "양념2"],
-      "steps": ["1. 조리 순서", "2. 조리 순서"],
-      "chef_tip": "조리 꿀팁",
-      "storage_tip": "식재료 보관 팁"
-    }
-  ]
-}`;
-
-      const key = MY_GEMINI_KEY.trim();
-      const requestPayload = {
-        contents: [{
-          parts: [
-            { text: prompt },
-            { inline_data: { mime_type: "image/jpeg", data: cleanBase64 } }
-          ]
-        }],
-        generationConfig: { response_mime_type: "application/json" }
-      };
-
-      // 3.8-flash 혼잡(503) 시 3.5-flash-lite로 즉시 대체
-      const targetModels = ['gemini-3.8-flash', 'gemini-3.5-flash-lite'];
-      let lastError = null;
-
-      for (const model of targetModels) {
-        try {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-goog-api-key': key
-            },
-            body: JSON.stringify(requestPayload)
-          });
-
-          if (res.ok) {
-            const data = await res.json();
-            const rawText = data.candidates[0].content.parts[0].text;
-            return JSON.parse(rawText.replace(/```json|```/g, '').trim());
-          }
-
-          const errDetail = await res.text();
-          lastError = `[${model}] ${res.status}: ${errDetail}`;
-
-          // 503(서버 혼잡)이 아니면 다른 모델로 넘어가지 않고 즉시 종료
-          if (res.status !== 503) {
-            break;
-          }
-        } catch (e) {
-          lastError = e.message;
-        }
       }
 
-      throw new Error(lastError || '분석 요청에 실패했습니다.');
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
     }
+
+
+    /*
+      ⭐ Gemini 호출
+      API KEY는 이 파일에 없습니다.
+      /api/generate 서버리스 함수가 Gemini를 호출합니다.
+    */
+
+    async function callGeminiAI(
+      base64Data,
+      seasonings,
+      style
+    ) {
+
+      const response =
+        await fetch('/api/generate', {
+
+          method: 'POST',
+
+          headers: {
+            'Content-Type': 'application/json'
+          },
+
+          body: JSON.stringify({
+
+            imageBase64: base64Data,
+
+            seasonings: seasonings,
+
+            style: style
+
+          })
+
+        });
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          'AI 분석에 실패했습니다.'
+        );
+
+      }
+
+
+      return data;
+
+    }
+
+
+    /* 결과 출력 */
 
     function renderResult(data) {
+
       detectedTagsContainer.innerHTML = '';
-      (data.detected_ingredients || []).forEach(tag => {
-        const badge = document.createElement('span');
-        badge.className = 'text-xs bg-slate-100 text-slate-700 font-semibold px-2.5 py-1 rounded-lg border border-slate-200';
-        badge.textContent = `# ${tag}`;
-        detectedTagsContainer.appendChild(badge);
-      });
+
+
+      (data.detected_ingredients || [])
+        .forEach(tag => {
+
+          const badge =
+            document.createElement('span');
+
+          badge.className =
+            'text-xs bg-slate-100 text-slate-700 font-semibold px-2.5 py-1 rounded-lg border border-slate-200';
+
+          badge.textContent =
+            `# ${tag}`;
+
+          detectedTagsContainer
+            .appendChild(badge);
+
+        });
+
 
       recipesListContainer.innerHTML = '';
-      (data.recipes || []).forEach((rcp, idx) => {
-        const card = document.createElement('div');
-        card.className = 'bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3';
-        card.innerHTML = `
-          <div class="flex justify-between items-start">
-            <div>
-              <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">추천 ${idx + 1}</span>
-              <h3 class="font-bold text-base text-slate-900 mt-1">${rcp.name}</h3>
-              <p class="text-xs text-slate-500">${rcp.summary || ''}</p>
+
+
+      (data.recipes || [])
+        .forEach((rcp, idx) => {
+
+          const card =
+            document.createElement('div');
+
+          card.className =
+            'bg-white rounded-2xl p-4 shadow-sm border border-slate-100 space-y-3';
+
+
+          card.innerHTML = `
+
+            <div class="flex justify-between items-start">
+
+              <div>
+
+                <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
+                  추천 ${idx + 1}
+                </span>
+
+                <h3 class="font-bold text-base text-slate-900 mt-1">
+                  ${rcp.name}
+                </h3>
+
+                <p class="text-xs text-slate-500">
+                  ${rcp.summary || ''}
+                </p>
+
+              </div>
+
+
+              <div class="text-right text-xs text-slate-400">
+
+                <div>
+                  ⏱️ ${rcp.time}
+                </div>
+
+                <div>
+                  ⭐ ${rcp.difficulty}
+                </div>
+
+              </div>
+
             </div>
-            <div class="text-right text-xs text-slate-400">
-              <div>⏱️ ${rcp.time}</div>
-              <div>⭐ ${rcp.difficulty}</div>
+
+
+            <div class="bg-slate-50 p-2.5 rounded-xl text-xs space-y-1">
+
+              <p>
+                <span class="font-bold text-slate-700">
+                  필요 재료:
+                </span>
+                ${(rcp.ingredients || []).join(', ')}
+              </p>
+
+              <p>
+                <span class="font-bold text-slate-700">
+                  사용 양념:
+                </span>
+                ${(rcp.seasonings || []).join(', ')}
+              </p>
+
             </div>
-          </div>
 
-          <div class="bg-slate-50 p-2.5 rounded-xl text-xs space-y-1">
-            <p><span class="font-bold text-slate-700">필요 재료:</span> ${(rcp.ingredients || []).join(', ')}</p>
-            <p><span class="font-bold text-slate-700">사용 양념:</span> ${(rcp.seasonings || []).join(', ')}</p>
-          </div>
 
-          <div class="border-t border-slate-100 pt-3 space-y-2">
-            <h4 class="font-bold text-xs text-slate-700">🍳 조리 순서</h4>
-            <ol class="text-xs text-slate-600 space-y-1.5 list-decimal list-inside leading-relaxed">
-              ${(rcp.steps || []).map(step => `<li>${step.replace(/^\d+\.\s*/, '')}</li>`).join('')}
-            </ol>
-          </div>
+            <div class="border-t border-slate-100 pt-3 space-y-2">
 
-          <div class="bg-amber-50/60 p-2.5 rounded-xl text-xs space-y-1 border border-amber-100/60">
-            <p class="text-amber-800"><span class="font-bold">💡 셰프 꿀팁:</span> ${rcp.chef_tip}</p>
-            <p class="text-slate-500 text-[11px]"><span class="font-bold">🥬 보관 팁:</span> ${rcp.storage_tip}</p>
-          </div>
-        `;
-        recipesListContainer.appendChild(card);
-      });
+              <h4 class="font-bold text-xs text-slate-700">
+                🍳 조리 순서
+              </h4>
+
+              <ol class="text-xs text-slate-600 space-y-1.5 list-decimal list-inside leading-relaxed">
+
+                ${(rcp.steps || [])
+                  .map(step =>
+                    `<li>${step.replace(/^\d+\.\s*/, '')}</li>`
+                  )
+                  .join('')}
+
+              </ol>
+
+            </div>
+
+
+            <div class="bg-amber-50/60 p-2.5 rounded-xl text-xs space-y-1 border border-amber-100/60">
+
+              <p class="text-amber-800">
+
+                <span class="font-bold">
+                  💡 셰프 꿀팁:
+                </span>
+
+                ${rcp.chef_tip || ''}
+
+              </p>
+
+
+              <p class="text-slate-500 text-[11px]">
+
+                <span class="font-bold">
+                  🥬 보관 팁:
+                </span>
+
+                ${rcp.storage_tip || ''}
+
+              </p>
+
+            </div>
+
+          `;
+
+          recipesListContainer
+            .appendChild(card);
+
+        });
+
     }
+
   </script>
+
 </body>
 </html>
+```
+
